@@ -1,0 +1,52 @@
+{
+  "kind": "collectionType",
+  "collectionName": "shop_customer_addresses",
+  "info": {
+    "singularName": "customer-address",
+    "pluralName": "customer-addresses",
+    "displayName": "Customer Address"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": false
+    }
+  },
+  "attributes": {
+    "legacyId": {
+      "type": "integer",
+      "unique": true,
+      "min": 1,
+      "private": true
+    },
+    "customer": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::customer-profile.customer-profile",
+      "inversedBy": "addresses",
+      "required": true
+    },
+    "label": {
+      "type": "string",
+      "maxLength": 60
+    },
+    "isDefaultShipping": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "isDefaultBilling": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "address": {
+      "type": "component",
+      "component": "commerce.address",
+      "repeatable": false,
+      "required": true
+    }
+  }
+}

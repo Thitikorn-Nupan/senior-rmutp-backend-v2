@@ -1,0 +1,153 @@
+{
+  "kind": "collectionType",
+  "collectionName": "shop_payments",
+  "info": {
+    "singularName": "payment",
+    "pluralName": "payments",
+    "displayName": "Payment"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": false
+    }
+  },
+  "attributes": {
+    "order": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::order.order",
+      "inversedBy": "payments",
+      "required": true
+    },
+    "paymentReference": {
+      "type": "string",
+      "required": true,
+      "unique": true,
+      "maxLength": 100
+    },
+    "method": {
+      "type": "enumeration",
+      "enum": [
+        "bank_transfer",
+        "stripe",
+        "legacy_unknown"
+      ],
+      "required": true,
+      "default": "bank_transfer"
+    },
+    "paymentStatus": {
+      "type": "enumeration",
+      "enum": [
+        "pending",
+        "awaiting_review",
+        "succeeded",
+        "failed",
+        "rejected",
+        "cancelled",
+        "legacy_review"
+      ],
+      "required": true,
+      "default": "pending"
+    },
+    "amount": {
+      "type": "decimal",
+      "required": true,
+      "min": 0,
+      "default": 0,
+      "column": {
+        "type": "decimal",
+        "args": [
+          15,
+          2
+        ]
+      }
+    },
+    "currency": {
+      "type": "string",
+      "required": true,
+      "default": "THB",
+      "regex": "^[A-Z]{3}$",
+      "minLength": 3,
+      "maxLength": 3
+    },
+    "bankAccountSnapshot": {
+      "type": "component",
+      "component": "commerce.bank-account",
+      "repeatable": false,
+      "required": false
+    },
+    "transferReference": {
+      "type": "string",
+      "maxLength": 180
+    },
+    "slipStorageKey": {
+      "type": "string",
+      "private": true,
+      "maxLength": 1024
+    },
+    "slipOriginalName": {
+      "type": "string",
+      "private": true,
+      "maxLength": 255
+    },
+    "slipMimeType": {
+      "type": "string",
+      "private": true,
+      "maxLength": 100
+    },
+    "legacySlipPath": {
+      "type": "string",
+      "private": true,
+      "maxLength": 2048
+    },
+    "stripeCheckoutSessionId": {
+      "type": "string",
+      "unique": true,
+      "private": true,
+      "maxLength": 255
+    },
+    "stripePaymentIntentId": {
+      "type": "string",
+      "unique": true,
+      "private": true,
+      "maxLength": 255
+    },
+    "idempotencyKey": {
+      "type": "string",
+      "unique": true,
+      "private": true,
+      "maxLength": 128
+    },
+    "submittedAt": {
+      "type": "datetime"
+    },
+    "paidAt": {
+      "type": "datetime"
+    },
+    "reviewedAt": {
+      "type": "datetime"
+    },
+    "reviewedBy": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "admin::user",
+      "private": true
+    },
+    "rejectionReason": {
+      "type": "text"
+    },
+    "failureCode": {
+      "type": "string",
+      "maxLength": 100
+    },
+    "events": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::payment-event.payment-event",
+      "mappedBy": "payment"
+    }
+  }
+}

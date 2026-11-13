@@ -1,0 +1,67 @@
+{
+  "kind": "collectionType",
+  "collectionName": "shop_inventory_movements",
+  "info": {
+    "singularName": "inventory-movement",
+    "pluralName": "inventory-movements",
+    "displayName": "Inventory Movement"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": false
+    }
+  },
+  "attributes": {
+    "movementKey": {
+      "type": "string",
+      "required": true,
+      "unique": true,
+      "maxLength": 128
+    },
+    "variant": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product-variant.product-variant",
+      "inversedBy": "inventoryMovements",
+      "required": true
+    },
+    "order": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::order.order",
+      "inversedBy": "inventoryMovements"
+    },
+    "movementType": {
+      "type": "enumeration",
+      "enum": [
+        "opening",
+        "restock",
+        "sale",
+        "return",
+        "adjustment"
+      ],
+      "required": true,
+      "default": "adjustment"
+    },
+    "quantityChange": {
+      "type": "integer",
+      "required": true
+    },
+    "reason": {
+      "type": "text"
+    },
+    "occurredAt": {
+      "type": "datetime",
+      "required": true
+    },
+    "performedBy": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "admin::user",
+      "private": true
+    }
+  }
+}

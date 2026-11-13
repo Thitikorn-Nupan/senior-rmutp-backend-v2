@@ -9,7 +9,9 @@
     "deploy": "strapi deploy",
     "dev": "strapi develop",
     "develop": "strapi develop",
-    "seed:example": "node ./scripts/seed.js",
+    "seed:commerce": "node ./scripts/seed-commerce.cjs",
+    "check:crud": "node ./scripts/check-crud.cjs",
+    "check:storefront": "node ./scripts/check-storefront.cjs",
     "start": "strapi start",
     "strapi": "strapi",
     "upgrade": "npx @strapi/upgrade latest",
@@ -33,6 +35,11 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "typescript": "^5"
+  },
+  "overrides": {
+    "@vitejs/plugin-react-swc": {
+      "@swc/core": "npm:@swc/wasm@1.16.22"
+    }
   },
   "engines": {
     "node": ">=22.0.0 <=26.x.x",

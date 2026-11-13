@@ -1,0 +1,47 @@
+{
+  "kind": "collectionType",
+  "collectionName": "shop_districts",
+  "info": {
+    "singularName": "district",
+    "pluralName": "districts",
+    "displayName": "District"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": false
+    }
+  },
+  "attributes": {
+    "code": {
+      "type": "string",
+      "required": true,
+      "unique": true,
+      "maxLength": 10
+    },
+    "nameTh": {
+      "type": "string",
+      "required": true,
+      "maxLength": 100
+    },
+    "nameEn": {
+      "type": "string",
+      "maxLength": 100
+    },
+    "province": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::province.province",
+      "inversedBy": "districts",
+      "required": true
+    },
+    "subdistricts": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::subdistrict.subdistrict",
+      "mappedBy": "district"
+    }
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "kind": "collectionType",
+  "collectionName": "shop_stock_reservations",
+  "info": {
+    "singularName": "stock-reservation",
+    "pluralName": "stock-reservations",
+    "displayName": "Stock Reservation"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": false
+    }
+  },
+  "attributes": {
+    "reservationKey": {
+      "type": "string",
+      "required": true,
+      "unique": true,
+      "maxLength": 128
+    },
+    "variant": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product-variant.product-variant",
+      "inversedBy": "reservations",
+      "required": true
+    },
+    "order": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::order.order",
+      "inversedBy": "reservations",
+      "required": true
+    },
+    "quantity": {
+      "type": "integer",
+      "required": true,
+      "min": 1,
+      "default": 1
+    },
+    "reservationStatus": {
+      "type": "enumeration",
+      "enum": [
+        "active",
+        "consumed",
+        "released",
+        "expired"
+      ],
+      "required": true,
+      "default": "active"
+    },
+    "expiresAt": {
+      "type": "datetime",
+      "required": true
+    },
+    "consumedAt": {
+      "type": "datetime"
+    },
+    "releasedAt": {
+      "type": "datetime"
+    }
+  }
+}

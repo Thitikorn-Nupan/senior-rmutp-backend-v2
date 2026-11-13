@@ -1,0 +1,75 @@
+{
+  "kind": "collectionType",
+  "collectionName": "shop_payment_events",
+  "info": {
+    "singularName": "payment-event",
+    "pluralName": "payment-events",
+    "displayName": "Payment Event"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": false
+    }
+  },
+  "attributes": {
+    "provider": {
+      "type": "enumeration",
+      "enum": [
+        "stripe",
+        "manual"
+      ],
+      "required": true,
+      "default": "stripe"
+    },
+    "providerEventId": {
+      "type": "string",
+      "required": true,
+      "unique": true,
+      "maxLength": 255,
+      "private": true
+    },
+    "eventType": {
+      "type": "string",
+      "required": true,
+      "maxLength": 150
+    },
+    "payment": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::payment.payment",
+      "inversedBy": "events"
+    },
+    "processingStatus": {
+      "type": "enumeration",
+      "enum": [
+        "received",
+        "processing",
+        "processed",
+        "failed",
+        "ignored"
+      ],
+      "required": true,
+      "default": "received"
+    },
+    "attemptCount": {
+      "type": "integer",
+      "required": true,
+      "min": 0,
+      "default": 0
+    },
+    "receivedAt": {
+      "type": "datetime",
+      "required": true
+    },
+    "processedAt": {
+      "type": "datetime"
+    },
+    "lastError": {
+      "type": "text",
+      "private": true
+    }
+  }
+}

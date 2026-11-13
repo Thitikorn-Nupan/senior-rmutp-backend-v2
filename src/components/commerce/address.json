@@ -1,0 +1,58 @@
+{
+  "collectionName": "components_commerce_addresss",
+  "info": {
+    "displayName": "Address snapshot"
+  },
+  "options": {},
+  "attributes": {
+    "recipientName": {
+      "type": "string",
+      "required": true,
+      "maxLength": 180
+    },
+    "phone": {
+      "type": "string",
+      "required": true,
+      "maxLength": 30
+    },
+    "addressLine1": {
+      "type": "string",
+      "required": true,
+      "maxLength": 255
+    },
+    "addressLine2": {
+      "type": "string",
+      "maxLength": 255
+    },
+    "subdistrict": {
+      "type": "string",
+      "required": true,
+      "maxLength": 100
+    },
+    "district": {
+      "type": "string",
+      "required": true,
+      "maxLength": 100
+    },
+    "province": {
+      "type": "string",
+      "required": true,
+      "maxLength": 100
+    },
+    "postalCode": {
+      "type": "string",
+      "required": true,
+      "regex": "^[0-9]{5}$",
+      "minLength": 5,
+      "maxLength": 5
+    },
+    "countryCode": {
+      "type": "string",
+      "required": true,
+      "default": "TH",
+      "regex": "^[A-Z]{2}$",
+      "minLength": 2,
+      "maxLength": 2
+    }
+  }
+}

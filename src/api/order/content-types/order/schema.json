@@ -1,0 +1,232 @@
+{
+  "kind": "collectionType",
+  "collectionName": "shop_orders",
+  "info": {
+    "singularName": "order",
+    "pluralName": "orders",
+    "displayName": "Order"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": false
+    }
+  },
+  "attributes": {
+    "legacyId": {
+      "type": "integer",
+      "unique": true,
+      "min": 1,
+      "private": true
+    },
+    "orderNumber": {
+      "type": "string",
+      "required": true,
+      "unique": true,
+      "maxLength": 64
+    },
+    "legacyTrackingNumber": {
+      "type": "string",
+      "maxLength": 255,
+      "private": true
+    },
+    "customer": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::customer-profile.customer-profile",
+      "inversedBy": "orders"
+    },
+    "customerName": {
+      "type": "string",
+      "required": true,
+      "maxLength": 180
+    },
+    "customerEmail": {
+      "type": "email",
+      "required": true
+    },
+    "customerPhone": {
+      "type": "string",
+      "maxLength": 30
+    },
+    "shippingAddress": {
+      "type": "component",
+      "component": "commerce.address",
+      "repeatable": false,
+      "required": true
+    },
+    "billingAddress": {
+      "type": "component",
+      "component": "commerce.address",
+      "repeatable": false,
+      "required": true
+    },
+    "items": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::order-item.order-item",
+      "mappedBy": "order"
+    },
+    "subtotal": {
+      "type": "decimal",
+      "required": true,
+      "min": 0,
+      "default": 0,
+      "column": {
+        "type": "decimal",
+        "args": [
+          15,
+          2
+        ]
+      }
+    },
+    "discountTotal": {
+      "type": "decimal",
+      "required": true,
+      "min": 0,
+      "default": 0,
+      "column": {
+        "type": "decimal",
+        "args": [
+          15,
+          2
+        ]
+      }
+    },
+    "shippingTotal": {
+      "type": "decimal",
+      "required": true,
+      "min": 0,
+      "default": 0,
+      "column": {
+        "type": "decimal",
+        "args": [
+          15,
+          2
+        ]
+      }
+    },
+    "taxTotal": {
+      "type": "decimal",
+      "required": true,
+      "min": 0,
+      "default": 0,
+      "column": {
+        "type": "decimal",
+        "args": [
+          15,
+          2
+        ]
+      }
+    },
+    "grandTotal": {
+      "type": "decimal",
+      "required": true,
+      "min": 0,
+      "default": 0,
+      "column": {
+        "type": "decimal",
+        "args": [
+          15,
+          2
+        ]
+      }
+    },
+    "currency": {
+      "type": "string",
+      "required": true,
+      "default": "THB",
+      "regex": "^[A-Z]{3}$",
+      "minLength": 3,
+      "maxLength": 3
+    },
+    "orderStatus": {
+      "type": "enumeration",
+      "enum": [
+        "pending_payment",
+        "confirmed",
+        "processing",
+        "shipped",
+        "completed",
+        "cancelled",
+        "expired",
+        "legacy_review"
+      ],
+      "required": true,
+      "default": "pending_payment"
+    },
+    "paymentStatus": {
+      "type": "enumeration",
+      "enum": [
+        "unpaid",
+        "pending_review",
+        "paid",
+        "partially_refunded",
+        "refunded",
+        "legacy_review"
+      ],
+      "required": true,
+      "default": "unpaid"
+    },
+    "placedAt": {
+      "type": "datetime",
+      "required": true
+    },
+    "paidAt": {
+      "type": "datetime"
+    },
+    "cancelledAt": {
+      "type": "datetime"
+    },
+    "expiresAt": {
+      "type": "datetime"
+    },
+    "customerNote": {
+      "type": "text"
+    },
+    "internalNote": {
+      "type": "text",
+      "private": true
+    },
+    "checkoutIdempotencyKey": {
+      "type": "string",
+      "unique": true,
+      "private": true,
+      "maxLength": 128
+    },
+    "payments": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::payment.payment",
+      "mappedBy": "order"
+    },
+    "reservations": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::stock-reservation.stock-reservation",
+      "mappedBy": "order"
+    },
+    "inventoryMovements": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::inventory-movement.inventory-movement",
+      "mappedBy": "order"
+    },
+    "carrier": {
+      "type": "string",
+      "maxLength": 100
+    },
+    "shippingTrackingNumber": {
+      "type": "string",
+      "maxLength": 120
+    },
+    "shippedAt": {
+      "type": "datetime"
+    },
+    "completedAt": {
+      "type": "datetime"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "categories": [
+    { "name": "unisex", "slug": "unisex", "description": "น้ำหอมสำหรับทุกเพศ", "sortOrder": 1 },
+    { "name": "male", "slug": "male", "description": "น้ำหอมสำหรับผู้ชาย", "sortOrder": 2 },
+    { "name": "female", "slug": "female", "description": "น้ำหอมสำหรับผู้หญิง", "sortOrder": 3 }
+  ],
+  "products": [
+    { "name": "Citrus Horizon", "slug": "demo-citrus-horizon", "gender": "unisex", "description": "น้ำหอมตัวอย่างโทนซิตรัส ผสานกลิ่นเบอร์กามอต ชาเขียว และมัสก์ ให้ความสดชื่น เหมาะกับวันสบาย ๆ", "sku": "DEMO-U001-50-EDP", "sizeMl": 50, "concentration": "edp", "price": "790.00", "stock": 24 },
+    { "name": "Amber Woods", "slug": "demo-amber-woods", "gender": "unisex", "description": "น้ำหอมตัวอย่างโทนอำพันและไม้ซีดาร์ เสริมความนุ่มด้วยวานิลลา ให้บรรยากาศอบอุ่น เหมาะกับช่วงเย็น", "sku": "DEMO-U002-100-EDP", "sizeMl": 100, "concentration": "edp", "price": "1290.00", "stock": 18 },
+    { "name": "Ocean Tea", "slug": "demo-ocean-tea", "gender": "unisex", "description": "น้ำหอมตัวอย่างกลิ่นชาและลมทะเล แต่งด้วยมะนาวและไวท์มัสก์ ให้สัมผัสสะอาดโปร่งเบา ใช้ได้ทุกวัน", "sku": "DEMO-U003-50-EDT", "sizeMl": 50, "concentration": "edt", "price": "690.00", "stock": 30 },
+    { "name": "Midnight Cedar", "slug": "demo-midnight-cedar", "gender": "male", "description": "น้ำหอมตัวอย่างกลิ่นไม้ซีดาร์ พริกไทยดำ และอำพัน ให้โทนสุขุม เหมาะกับโอกาสพิเศษและการใช้งานช่วงค่ำ", "sku": "DEMO-M001-100-EDP", "sizeMl": 100, "concentration": "edp", "price": "1390.00", "stock": 15 },
+    { "name": "Urban Vetiver", "slug": "demo-urban-vetiver", "gender": "male", "description": "น้ำหอมตัวอย่างโทนเวติเวอร์ ผสานเกรปฟรุตและไม้หอม ให้กลิ่นสดชื่นเรียบง่าย เหมาะกับวันทำงาน", "sku": "DEMO-M002-50-EDT", "sizeMl": 50, "concentration": "edt", "price": "750.00", "stock": 22 },
+    { "name": "Blue Expedition", "slug": "demo-blue-expedition", "gender": "male", "description": "น้ำหอมตัวอย่างโทนอควาติก แต่งด้วยมิ้นต์ ลาเวนเดอร์ และแซนดัลวูด เหมาะกับวันพักผ่อนและกิจกรรมกลางแจ้ง", "sku": "DEMO-M003-100-EDT", "sizeMl": 100, "concentration": "edt", "price": "990.00", "stock": 20 },
+    { "name": "Rose Reverie", "slug": "demo-rose-reverie", "gender": "female", "description": "น้ำหอมตัวอย่างกลิ่นกุหลาบและพีโอนี เสริมความสดใสด้วยลิ้นจี่ ให้โทนอ่อนโยน เหมาะกับใช้ระหว่างวัน", "sku": "DEMO-F001-50-EDP", "sizeMl": 50, "concentration": "edp", "price": "890.00", "stock": 25 },
+    { "name": "Vanilla Bloom", "slug": "demo-vanilla-bloom", "gender": "female", "description": "น้ำหอมตัวอย่างโทนวานิลลาและดอกมะลิ ผสานคาราเมล ให้กลิ่นหวานอบอุ่น เหมาะกับวันพิเศษ", "sku": "DEMO-F002-100-EDP", "sizeMl": 100, "concentration": "edp", "price": "1190.00", "stock": 16 },
+    { "name": "Peony Blush", "slug": "demo-peony-blush", "gender": "female", "description": "น้ำหอมตัวอย่างโทนฟลอรัลฟรุ๊ตตี้ ผสานพีโอนี ลูกแพร์ และมัสก์ ให้กลิ่นสดใสเบาสบาย เหมาะกับทุกวัน", "sku": "DEMO-F003-50-EDT", "sizeMl": 50, "concentration": "edt", "price": "590.00", "stock": 28 },
+    { "name": "Jasmine Moon", "slug": "demo-jasmine-moon", "gender": "female", "description": "น้ำหอมตัวอย่างกลิ่นมะลิและดอกส้ม ปิดท้ายด้วยแซนดัลวูด ให้โทนนุ่มลึก เหมาะกับงานเลี้ยงและช่วงเย็น", "sku": "DEMO-F004-50-EDP", "sizeMl": 50, "concentration": "edp", "price": "950.00", "stock": 12 }
+  ]
+}

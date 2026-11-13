@@ -1,0 +1,124 @@
+{
+  "kind": "collectionType",
+  "collectionName": "shop_product_variants",
+  "info": {
+    "singularName": "product-variant",
+    "pluralName": "product-variants",
+    "displayName": "Product Variant"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": false
+    }
+  },
+  "attributes": {
+    "legacyId": {
+      "type": "integer",
+      "unique": true,
+      "min": 1,
+      "private": true
+    },
+    "product": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product.product",
+      "inversedBy": "variants",
+      "required": true
+    },
+    "sku": {
+      "type": "string",
+      "required": true,
+      "unique": true,
+      "maxLength": 90
+    },
+    "label": {
+      "type": "string",
+      "maxLength": 180
+    },
+    "sizeMl": {
+      "type": "decimal",
+      "min": 0.01
+    },
+    "concentration": {
+      "type": "enumeration",
+      "enum": [
+        "parfum",
+        "extrait",
+        "edp",
+        "edt",
+        "edc",
+        "mist",
+        "other",
+        "unspecified"
+      ],
+      "required": true,
+      "default": "unspecified"
+    },
+    "price": {
+      "type": "decimal",
+      "required": true,
+      "min": 0,
+      "default": 0,
+      "column": {
+        "type": "decimal",
+        "args": [
+          15,
+          2
+        ]
+      }
+    },
+    "currency": {
+      "type": "string",
+      "required": true,
+      "default": "THB",
+      "regex": "^[A-Z]{3}$",
+      "minLength": 3,
+      "maxLength": 3
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "stockOnHand": {
+      "type": "integer",
+      "required": true,
+      "min": 0,
+      "default": 0
+    },
+    "stockReserved": {
+      "type": "integer",
+      "required": true,
+      "min": 0,
+      "default": 0
+    },
+    "isActive": {
+      "type": "boolean",
+      "required": true,
+      "default": true
+    },
+    "orderItems": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::order-item.order-item",
+      "mappedBy": "variant"
+    },
+    "reservations": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::stock-reservation.stock-reservation",
+      "mappedBy": "variant"
+    },
+    "inventoryMovements": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::inventory-movement.inventory-movement",
+      "mappedBy": "variant"
+    }
+  }
+}

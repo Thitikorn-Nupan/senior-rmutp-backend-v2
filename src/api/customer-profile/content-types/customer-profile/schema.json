@@ -1,0 +1,56 @@
+{
+  "kind": "collectionType",
+  "collectionName": "shop_customer_profiles",
+  "info": {
+    "singularName": "customer-profile",
+    "pluralName": "customer-profiles",
+    "displayName": "Customer Profile"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": false
+    }
+  },
+  "attributes": {
+    "legacyId": {
+      "type": "integer",
+      "unique": true,
+      "min": 1,
+      "private": true
+    },
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "firstName": {
+      "type": "string",
+      "required": true,
+      "maxLength": 90
+    },
+    "lastName": {
+      "type": "string",
+      "required": true,
+      "maxLength": 90
+    },
+    "phone": {
+      "type": "string",
+      "maxLength": 30
+    },
+    "addresses": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::customer-address.customer-address",
+      "mappedBy": "customer"
+    },
+    "orders": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::order.order",
+      "mappedBy": "customer"
+    }
+  }
+}

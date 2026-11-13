@@ -1,0 +1,116 @@
+{
+  "kind": "collectionType",
+  "collectionName": "shop_order_items",
+  "info": {
+    "singularName": "order-item",
+    "pluralName": "order-items",
+    "displayName": "Order Item"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": false
+    }
+  },
+  "attributes": {
+    "legacyId": {
+      "type": "integer",
+      "unique": true,
+      "min": 1,
+      "private": true
+    },
+    "order": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::order.order",
+      "inversedBy": "items",
+      "required": true
+    },
+    "variant": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product-variant.product-variant",
+      "inversedBy": "orderItems"
+    },
+    "productNameSnapshot": {
+      "type": "string",
+      "required": true,
+      "maxLength": 255
+    },
+    "skuSnapshot": {
+      "type": "string",
+      "required": true,
+      "maxLength": 90
+    },
+    "variantSnapshot": {
+      "type": "component",
+      "component": "commerce.variant-snapshot",
+      "repeatable": false,
+      "required": false
+    },
+    "imageSnapshot": {
+      "type": "string",
+      "maxLength": 2048
+    },
+    "unitPrice": {
+      "type": "decimal",
+      "required": true,
+      "min": 0,
+      "default": 0,
+      "column": {
+        "type": "decimal",
+        "args": [
+          15,
+          2
+        ]
+      }
+    },
+    "quantity": {
+      "type": "integer",
+      "required": true,
+      "min": 1,
+      "default": 1
+    },
+    "discountTotal": {
+      "type": "decimal",
+      "required": true,
+      "min": 0,
+      "default": 0,
+      "column": {
+        "type": "decimal",
+        "args": [
+          15,
+          2
+        ]
+      }
+    },
+    "taxTotal": {
+      "type": "decimal",
+      "required": true,
+      "min": 0,
+      "default": 0,
+      "column": {
+        "type": "decimal",
+        "args": [
+          15,
+          2
+        ]
+      }
+    },
+    "lineTotal": {
+      "type": "decimal",
+      "required": true,
+      "min": 0,
+      "default": 0,
+      "column": {
+        "type": "decimal",
+        "args": [
+          15,
+          2
+        ]
+      }
+    }
+  }
+}

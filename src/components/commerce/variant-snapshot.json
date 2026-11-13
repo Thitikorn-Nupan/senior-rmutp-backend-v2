@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_commerce_variant_snapshots",
+  "info": {
+    "displayName": "Variant snapshot"
+  },
+  "options": {},
+  "attributes": {
+    "sizeMl": {
+      "type": "decimal",
+      "min": 0.01
+    },
+    "concentration": {
+      "type": "string",
+      "maxLength": 40
+    },
+    "label": {
+      "type": "string",
+      "maxLength": 180
+    }
+  }
+}

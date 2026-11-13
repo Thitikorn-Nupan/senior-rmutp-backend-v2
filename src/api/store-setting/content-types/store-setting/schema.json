@@ -1,0 +1,122 @@
+{
+  "kind": "singleType",
+  "collectionName": "shop_store_settings",
+  "info": {
+    "singularName": "store-setting",
+    "pluralName": "store-settings",
+    "displayName": "Store Setting"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": false
+    }
+  },
+  "attributes": {
+    "storeName": {
+      "type": "string",
+      "required": true,
+      "maxLength": 180
+    },
+    "logo": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "contactEmail": {
+      "type": "email"
+    },
+    "phone": {
+      "type": "string",
+      "maxLength": 30
+    },
+    "storeAddress": {
+      "type": "component",
+      "component": "commerce.address",
+      "repeatable": false,
+      "required": false
+    },
+    "legalName": {
+      "type": "string",
+      "maxLength": 255
+    },
+    "taxId": {
+      "type": "string",
+      "maxLength": 30
+    },
+    "currency": {
+      "type": "string",
+      "required": true,
+      "default": "THB",
+      "regex": "^[A-Z]{3}$",
+      "minLength": 3,
+      "maxLength": 3
+    },
+    "timezone": {
+      "type": "string",
+      "required": true,
+      "default": "Asia/Bangkok"
+    },
+    "bankTransferEnabled": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "stripeEnabled": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "bankAccounts": {
+      "type": "component",
+      "component": "commerce.bank-account",
+      "repeatable": true,
+      "required": false
+    },
+    "paymentWindowMinutes": {
+      "type": "integer",
+      "required": true,
+      "min": 1,
+      "default": 30
+    },
+    "transferReviewWindowMinutes": {
+      "type": "integer",
+      "required": true,
+      "min": 1,
+      "default": 1440
+    },
+    "flatShippingFee": {
+      "type": "decimal",
+      "required": true,
+      "min": 0,
+      "default": 0,
+      "column": {
+        "type": "decimal",
+        "args": [
+          15,
+          2
+        ]
+      }
+    },
+    "freeShippingThreshold": {
+      "type": "decimal",
+      "min": 0,
+      "column": {
+        "type": "decimal",
+        "args": [
+          15,
+          2
+        ]
+      }
+    },
+    "pricesIncludeTax": {
+      "type": "boolean",
+      "required": true,
+      "default": true
+    }
+  }
+}

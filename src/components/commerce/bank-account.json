@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_commerce_bank_accounts",
+  "info": {
+    "displayName": "Bank account snapshot"
+  },
+  "options": {},
+  "attributes": {
+    "bankName": {
+      "type": "string",
+      "required": true,
+      "maxLength": 100
+    },
+    "accountName": {
+      "type": "string",
+      "required": true,
+      "maxLength": 180
+    },
+    "accountNumber": {
+      "type": "string",
+      "required": true,
+      "maxLength": 40
+    },
+    "branch": {
+      "type": "string",
+      "maxLength": 100
+    },
+    "instructions": {
+      "type": "text"
+    }
+  }
+}

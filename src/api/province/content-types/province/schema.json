@@ -1,0 +1,40 @@
+{
+  "kind": "collectionType",
+  "collectionName": "shop_provinces",
+  "info": {
+    "singularName": "province",
+    "pluralName": "provinces",
+    "displayName": "Province"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": false
+    }
+  },
+  "attributes": {
+    "code": {
+      "type": "string",
+      "required": true,
+      "unique": true,
+      "maxLength": 10
+    },
+    "nameTh": {
+      "type": "string",
+      "required": true,
+      "maxLength": 100
+    },
+    "nameEn": {
+      "type": "string",
+      "maxLength": 100
+    },
+    "districts": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::district.district",
+      "mappedBy": "province"
+    }
+  }
+}

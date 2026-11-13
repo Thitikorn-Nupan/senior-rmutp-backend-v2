@@ -1,5 +1,7 @@
 # 🚀 Getting started with Strapi
 
+Perfume store schemas and setup instructions: [Commerce database](docs/commerce-database.md).
+
 Strapi comes with a full featured [Command Line Interface](https://docs.strapi.io/dev-docs/cli) (CLI) which lets you scaffold and manage your project in seconds.
 
 ### `develop`
@@ -11,6 +13,22 @@ npm run develop
 # or
 yarn develop
 ```
+
+### Windows: SWC native binding error
+
+If startup reports `Failed to load native binding` and the nested cause is
+`An Application Control policy has blocked this file`, Windows is blocking
+SWC's native `.node` binary.
+
+This project uses an npm override scoped to `@vitejs/plugin-react-swc` to load
+`@swc/wasm` instead of `@swc/core`. Run `npm ci` after cloning, then `npm run dev`.
+The override is recorded in `package.json` and `package-lock.json`, so no manual
+changes to `node_modules` or Windows security settings are needed. WebAssembly
+compilation may be slower than the native compiler. Recheck compatibility when
+upgrading Strapi or adding SWC plugins.
+
+The development warning about the `sendmail` email provider is separate from
+this error; configure `nodemailer` when an SMTP relay is required.
 
 ### `start`
 
