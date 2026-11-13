@@ -1,0 +1,42 @@
+{
+  "provinces": [
+    { "pid": 1, "name": "Bangkok" },
+    { "pid": 2, "name": "Nonthaburi" },
+    { "pid": 3, "name": "Samut Sakhon" },
+    { "pid": 4, "name": "Chonburi" }
+  ],
+  "districts": [
+    { "did": 1, "name": "Dusit", "pid": 1 },
+    { "did": 2, "name": "Bang Rak", "pid": 1 },
+    { "did": 3, "name": "Bang Khen", "pid": 1 },
+    { "did": 4, "name": "Bang Kapi", "pid": 1 },
+    { "did": 5, "name": "Pathum Wan", "pid": 1 },
+    { "did": 6, "name": "Bang Khun Thian", "pid": 1 },
+    { "did": 7, "name": "Nong Khaem", "pid": 1 },
+    { "did": 8, "name": "Din Daeng", "pid": 1 },
+    { "did": 9, "name": "Bang Bua Thong", "pid": 2 },
+    { "did": 10, "name": "Bang Rak Pattana", "pid": 2 },
+    { "did": 11, "name": "Bang Kruai", "pid": 2 },
+    { "did": 12, "name": "Bang Khu Rat", "pid": 2 },
+    { "did": 13, "name": "Sai Ma", "pid": 2 },
+    { "did": 14, "name": "Phimon Rat", "pid": 2 },
+    { "did": 15, "name": "Plai Bang", "pid": 2 },
+    { "did": 16, "name": "Sala Klang", "pid": 2 },
+    { "did": 17, "name": "Lak Ha", "pid": 3 },
+    { "did": 18, "name": "Khae Rai", "pid": 3 },
+    { "did": 19, "name": "Don Kai Di", "pid": 3 },
+    { "did": 20, "name": "Bang Pla", "pid": 3 },
+    { "did": 21, "name": "Kaset Phatthana", "pid": 3 },
+    { "did": 22, "name": "Tha Chin", "pid": 3 },
+    { "did": 23, "name": "Ban Phaeo", "pid": 3 },
+    { "did": 24, "name": "Na Di", "pid": 3 },
+    { "did": 25, "name": "Makham Yong", "pid": 4 },
+    { "did": 26, "name": "Ban Khot", "pid": 4 },
+    { "did": 27, "name": "Saen Suk", "pid": 4 },
+    { "did": 28, "name": "Ban Suan", "pid": 4 },
+    { "did": 29, "name": "Nong Ri", "pid": 4 },
+    { "did": 30, "name": "Na Pa", "pid": 4 },
+    { "did": 31, "name": "Don Hua Lo", "pid": 4 },
+    { "did": 32, "name": "Bang Sai", "pid": 4 }
+  ]
+}

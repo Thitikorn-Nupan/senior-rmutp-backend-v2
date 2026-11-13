@@ -892,6 +892,11 @@ export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 128;
       }>;
+    checkoutPayloadHash: Schema.Attribute.String &
+      Schema.Attribute.Private &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 64;
+      }>;
     completedAt: Schema.Attribute.DateTime;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -1211,6 +1216,11 @@ export interface ApiPaymentPayment extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private &
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 255;
+      }>;
+    slipSha256: Schema.Attribute.String &
+      Schema.Attribute.Private &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 64;
       }>;
     slipStorageKey: Schema.Attribute.String &
       Schema.Attribute.Private &

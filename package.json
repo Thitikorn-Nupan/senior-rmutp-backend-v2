@@ -10,6 +10,9 @@
     "dev": "strapi develop",
     "develop": "strapi develop",
     "seed:commerce": "node ./scripts/seed-commerce.cjs",
+    "seed:locations": "node ./scripts/seed-locations.cjs",
+    "check:locations": "node ./scripts/check-locations.cjs",
+    "check:checkout": "node ./scripts/check-checkout.cjs",
     "check:crud": "node ./scripts/check-crud.cjs",
     "check:storefront": "node ./scripts/check-storefront.cjs",
     "start": "strapi start",
@@ -28,6 +31,7 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.30.3",
+    "sharp": "0.35.5",
     "styled-components": "^6.0.0"
   },
   "devDependencies": {

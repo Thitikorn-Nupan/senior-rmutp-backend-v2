@@ -88,6 +88,11 @@
       "private": true,
       "maxLength": 1024
     },
+    "slipSha256": {
+      "type": "string",
+      "private": true,
+      "maxLength": 64
+    },
     "slipOriginalName": {
       "type": "string",
       "private": true,

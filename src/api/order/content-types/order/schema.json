@@ -196,6 +196,11 @@
       "private": true,
       "maxLength": 128
     },
+    "checkoutPayloadHash": {
+      "type": "string",
+      "private": true,
+      "maxLength": 64
+    },
     "payments": {
       "type": "relation",
       "relation": "oneToMany",
