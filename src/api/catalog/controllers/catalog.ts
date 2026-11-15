@@ -36,6 +36,7 @@ export default {
         }
         const filters = {
             isActive: true,
+            archivedAt: {$null: true},
             ...(category ? {categories: {id: Number(category), isActive: true, publishedAt: {$notNull: true}}} : {}),
             ...(search ? {name: {$containsi: String(search).trim()}} : {}),
         };
@@ -55,7 +56,7 @@ export default {
 
     async product(ctx: Context) {
         const data = await strapi.documents('api::product.product').findOne({
-            ...productQuery, documentId: ctx.params.documentId, filters: {isActive: true},
+            ...productQuery, documentId: ctx.params.documentId, filters: {isActive: true, archivedAt: {$null: true}},
         });
         if (!data) return ctx.notFound('Product not found');
         ctx.body = {data};

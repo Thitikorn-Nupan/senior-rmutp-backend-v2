@@ -15,6 +15,7 @@
     }
   },
   "attributes": {
+    "archivedAt": { "type": "datetime", "private": true },
     "legacyId": {
       "type": "integer",
       "unique": true,

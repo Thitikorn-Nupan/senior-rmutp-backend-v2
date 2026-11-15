@@ -1,4 +1,5 @@
 import type { Core } from '@strapi/strapi';
+import { configureAppRoles } from './bootstrap/app-roles';
 
 export default {
   /**
@@ -17,16 +18,6 @@ export default {
    * run jobs, or perform some special logic.
   */
   async bootstrap({ strapi }: { strapi: Core.Strapi }) {
-    const role = await strapi.db.query('plugin::users-permissions.role').findOne({ where: { type: 'authenticated' } });
-    if (!role) return;
-    // Only customer workflow actions are enabled. Every action also checks the
-    // signed-in user and order ownership; management CRUD remains token-only.
-    const permissions = strapi.db.query('plugin::users-permissions.permission');
-    for (const actionName of ['quote', 'create', 'request', 'order', 'history', 'receipt', 'download']) {
-      const action = `api::checkout.checkout.${actionName}`;
-      if (!await permissions.findOne({ where: { action, role: role.id } })) {
-        await permissions.create({ data: { action, role: role.id } });
-      }
-    }
+    await configureAppRoles(strapi);
   },
 };

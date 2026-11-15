@@ -1,9 +1,9 @@
-import type { Context } from 'koa';
+import type {Context} from 'koa';
 
-// Core CRUD is for trusted management clients. Customer APIs need ownership
-// checks and commerce workflows rather than unrestricted document access.
+// Keep API token scopes enforced by Strapi; app admins additionally pass this
+// policy using the database-backed role loaded by Users & Permissions.
 const managementApiToken = (ctx: Context): boolean => {
-  return ctx.state.auth?.strategy?.name === 'content-api-token';
+    return ctx.state.auth?.strategy?.name === 'content-api-token' || (ctx.state.auth?.strategy?.name === 'users-permissions' && ctx.state.user?.role?.type === 'app-admin');
 };
 
 export default managementApiToken;

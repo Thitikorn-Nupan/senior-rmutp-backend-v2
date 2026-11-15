@@ -1445,6 +1445,7 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     };
   };
   attributes: {
+    archivedAt: Schema.Attribute.DateTime & Schema.Attribute.Private;
     brand: Schema.Attribute.Relation<'manyToOne', 'api::brand.brand'>;
     categories: Schema.Attribute.Relation<
       'manyToMany',
