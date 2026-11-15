@@ -42,6 +42,9 @@ export async function configureAppRoles(strapi: Core.Strapi): Promise<void> {
 
     for (const role of [userRole, adminRole]) {
         await grant(role.id, 'plugin::users-permissions.user.me');
+        for (const action of ['me', 'updateMe', 'avatar', 'removeAvatar']) {
+            await grant(role.id, `api::customer-profile.customer-profile.${action}`);
+        }
         for (const action of ['quote', 'create', 'request', 'order', 'history', 'receipt', 'download']) {
             await grant(role.id, `api::checkout.checkout.${action}`);
         }

@@ -15,6 +15,7 @@
     }
   },
   "attributes": {
+    "isCheckoutEnabled": {"type": "boolean", "default": true, "required": true},
     "code": {
       "type": "string",
       "required": true,

@@ -2,6 +2,10 @@ import type {Core} from '@strapi/strapi';
 import type {Context} from 'koa';
 
 export default (plugin: any) => {
+    plugin.contentTypes.user.schema.attributes.profile = {
+        type: 'relation', relation: 'oneToOne', target: 'api::customer-profile.customer-profile',
+        mappedBy: 'user', private: true,
+    };
     async function addRoleToUser(strapi: Core.Strapi, user: any): Promise<void> {
         if (!user?.id) return;
         const stored = await strapi.db.query('plugin::users-permissions.user').findOne({

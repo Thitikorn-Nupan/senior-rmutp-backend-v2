@@ -4,7 +4,7 @@ import type {Context} from 'koa';
 export default {
     async provinces(ctx: Context) {
         const data = await strapi.documents('api::province.province').findMany({
-            fields: ['code', 'nameTh', 'nameEn'], sort: ['code:asc'], limit: 1000,
+            fields: ['code', 'nameTh', 'nameEn'], filters: {isCheckoutEnabled: true}, sort: ['code:asc'], limit: 1000,
         });
         ctx.body = {data};
     },
@@ -15,8 +15,10 @@ export default {
             return ctx.badRequest('A valid province ID is required');
         }
         const data = await strapi.documents('api::district.district').findMany({
-            fields: ['code', 'nameTh', 'nameEn'], filters: {province: {id: Number(province)}},
-            sort: ['nameEn:asc', 'nameTh:asc'], limit: 1000,
+            fields: ['code', 'nameTh', 'nameEn'],
+            filters: {isCheckoutEnabled: true, province: {id: Number(province), isCheckoutEnabled: true}},
+            sort: ['nameEn:asc', 'nameTh:asc'],
+            limit: 1000,
         });
         ctx.body = {data};
     },

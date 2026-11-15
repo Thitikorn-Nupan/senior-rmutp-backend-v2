@@ -109,12 +109,51 @@ export interface CommerceVariantSnapshot extends Struct.ComponentSchema {
   };
 }
 
+export interface ProfileContactAddress extends Struct.ComponentSchema {
+  collectionName: 'components_profile_contact_addresses';
+  info: {
+    displayName: 'Profile contact address';
+  };
+  attributes: {
+    addressLine1: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 255;
+      }>;
+    addressLine2: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 255;
+      }>;
+    countryCode: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 2;
+      }> &
+      Schema.Attribute.DefaultTo<'TH'>;
+    district: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 100;
+      }>;
+    postalCode: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 5;
+      }>;
+    province: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 100;
+      }>;
+    subdistrict: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 100;
+      }>;
+  };
+}
+
 declare module '@strapi/strapi' {
   export namespace Public {
     export interface ComponentSchemas {
       'commerce.address': CommerceAddress;
       'commerce.bank-account': CommerceBankAccount;
       'commerce.variant-snapshot': CommerceVariantSnapshot;
+      'profile.contact-address': ProfileContactAddress;
     }
   }
 }

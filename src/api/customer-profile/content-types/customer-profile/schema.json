@@ -24,21 +24,34 @@
     "user": {
       "type": "relation",
       "relation": "oneToOne",
-      "target": "plugin::users-permissions.user"
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "profile"
     },
     "firstName": {
       "type": "string",
-      "required": true,
       "maxLength": 90
     },
     "lastName": {
       "type": "string",
-      "required": true,
       "maxLength": 90
     },
     "phone": {
       "type": "string",
       "maxLength": 30
+    },
+    "displayName": {
+      "type": "string",
+      "maxLength": 90
+    },
+    "avatar": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
+    "shippingAddress": {
+      "type": "component",
+      "component": "profile.contact-address",
+      "repeatable": false
     },
     "addresses": {
       "type": "relation",

@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_profile_contact_addresses",
+  "info": {"displayName": "Profile contact address"},
+  "attributes": {
+    "addressLine1": {"type": "string", "maxLength": 255},
+    "addressLine2": {"type": "string", "maxLength": 255},
+    "subdistrict": {"type": "string", "maxLength": 100},
+    "district": {"type": "string", "maxLength": 100},
+    "province": {"type": "string", "maxLength": 100},
+    "postalCode": {"type": "string", "maxLength": 5},
+    "countryCode": {"type": "string", "default": "TH", "maxLength": 2}
+  }
+}

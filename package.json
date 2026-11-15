@@ -17,6 +17,7 @@
     "check:storefront": "node ./scripts/check-storefront.cjs",
     "check:roles": "node ./scripts/check-app-roles.cjs",
     "check:products": "node ./scripts/check-product-management.cjs",
+    "check:profile": "node ./scripts/check-profile.cjs",
     "start": "strapi start",
     "strapi": "strapi",
     "upgrade": "npx @strapi/upgrade latest",

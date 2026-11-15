@@ -143,11 +143,12 @@ export default ({strapi}: { strapi: Core.Strapi }) => {
 
     async function validateLocation(value: AddressInput) {
         const province = await strapi.documents('api::province.province').findFirst({
-            filters: {$or: [{nameEn: value.province}, {nameTh: value.province}]},
+            filters: {isCheckoutEnabled: true, $or: [{nameEn: value.province}, {nameTh: value.province}]},
         });
         if (!province) invalid('Please select a valid province');
         const district = await strapi.documents('api::district.district').findFirst({
             filters: {
+                isCheckoutEnabled: true,
                 province: {documentId: province.documentId},
                 $or: [{nameEn: value.district}, {nameTh: value.district}]
             },

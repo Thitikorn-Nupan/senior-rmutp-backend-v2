@@ -5,7 +5,8 @@ import {unlink} from 'node:fs/promises';
 // the OS temporary directory. This wraps the body parser and auth middleware.
 export default () => async (ctx: Context, next: Next) => {
     const receipt = ctx.method === 'POST' && /^\/api\/checkout\/orders\/[^/]+\/receipt\/?$/.test(ctx.path);
-    if (!receipt) return next();
+    const avatar = ctx.method === 'POST' && /^\/api\/profile\/me\/avatar\/?$/.test(ctx.path);
+    if (!receipt && !avatar) return next();
     if (Number(ctx.get('Content-Length')) > 6 * 1024 * 1024) ctx.throw(413, 'Receipt images must be no larger than 5 MB');
     try {
         await next();

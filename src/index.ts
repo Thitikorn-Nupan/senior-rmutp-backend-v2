@@ -1,5 +1,6 @@
 import type { Core } from '@strapi/strapi';
 import { configureAppRoles } from './bootstrap/app-roles';
+import { configureCustomerProfiles } from './bootstrap/customer-profiles';
 
 export default {
   /**
@@ -19,5 +20,6 @@ export default {
   */
   async bootstrap({ strapi }: { strapi: Core.Strapi }) {
     await configureAppRoles(strapi);
+    await configureCustomerProfiles(strapi);
   },
 };
