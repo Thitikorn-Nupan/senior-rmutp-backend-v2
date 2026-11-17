@@ -20,6 +20,14 @@ export default {
   async history(ctx: Context) {
     ctx.body = await strapi.service('api::checkout.checkout').history(userId(ctx), ctx.query);
   },
+  async adminHistory(ctx: Context) {
+    ctx.set('Cache-Control', 'private, no-store');
+    ctx.body = await strapi.service('api::checkout.checkout').adminHistory(ctx.query);
+  },
+  async approvePayment(ctx: Context) {
+    ctx.set('Cache-Control', 'private, no-store');
+    ctx.body = {data: await strapi.service('api::checkout.checkout').approvePayment(ctx.params.documentId)};
+  },
   async order(ctx: Context) {
     const user = userId(ctx);
     await strapi.service('api::checkout.checkout').releaseExpired();

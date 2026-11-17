@@ -256,6 +256,107 @@ export default ({strapi}: { strapi: Core.Strapi }) => {
     return {
         getOrder,
         releaseExpired,
+        async adminHistory(query: Record<string, unknown>) {
+            const page = Math.max(1, Number(query.page ?? 1));
+            const pageSize = Math.min(50, Math.max(1, Number(query.pageSize ?? 12)));
+            if (!Number.isSafeInteger(page) || !Number.isSafeInteger(pageSize)) invalid('Invalid pagination');
+            const search = typeof query.search === 'string' ? query.search.trim() : '';
+            const status = typeof query.status === 'string' ? query.status : '';
+            const filters: Record<string, unknown> = {};
+            if (search) filters.orderNumber = {$containsi: search};
+            if (status === 'pending_review') filters.paymentStatus = 'pending_review';
+            else if (status) filters.orderStatus = status;
+            const [total, rows, summaryRows] = await Promise.all([
+                orders.count({filters}),
+                orders.findMany({
+                filters, sort: ['placedAt:desc', 'id:desc'], start: (page - 1) * pageSize, limit: pageSize,
+                populate: {items: true, payments: true}
+                }),
+                orders.findMany({fields: ['grandTotal', 'paymentStatus'], limit: 100000})
+            ]);
+            const billTotal = summaryRows.reduce((sum, order) => sum + Number(order.grandTotal ?? 0), 0);
+            const verifiedRevenue = summaryRows
+                .filter(order => order.paymentStatus === 'paid')
+                .reduce((sum, order) => sum + Number(order.grandTotal ?? 0), 0);
+            return {
+                data: rows.map(order => ({
+                    documentId: order.documentId, orderNumber: order.orderNumber,
+                    orderStatus: order.orderStatus, paymentStatus: order.paymentStatus,
+                    customerName: order.customerName, customerEmail: order.customerEmail,
+                    customerPhone: order.customerPhone, placedAt: order.placedAt,
+                    grandTotal: order.grandTotal, currency: order.currency,
+                    items: order.items?.map(item => ({
+                        name: item.productNameSnapshot, sku: item.skuSnapshot,
+                        quantity: item.quantity, unitPrice: item.unitPrice, lineTotal: item.lineTotal,
+                        image: item.imageSnapshot
+                    })) ?? [],
+                    payment: order.payments?.find(payment => payment.method === 'bank_transfer') ? {
+                        status: order.payments.find(payment => payment.method === 'bank_transfer')?.paymentStatus,
+                        reference: order.payments.find(payment => payment.method === 'bank_transfer')?.paymentReference,
+                        submittedAt: order.payments.find(payment => payment.method === 'bank_transfer')?.submittedAt
+                    } : null
+                })),
+                meta: {pagination: {page, pageSize, total, pageCount: Math.ceil(total / pageSize)}},
+                summary: {
+                    billTotal: billTotal.toFixed(2),
+                    verifiedRevenue: verifiedRevenue.toFixed(2),
+                    currency: 'THB'
+                }
+            };
+        },
+        async approvePayment(documentId: string) {
+            return strapi.db.transaction(async ({trx}) => {
+                const lockedOrder = await trx(table('api::order.order')).where({document_id: documentId}).forUpdate().first();
+                if (!lockedOrder) throw new errors.NotFoundError('Order not found');
+                const order = await orders.findOne({
+                    documentId, populate: {items: true, payments: true, reservations: {populate: {variant: true}}}
+                });
+                const payment = order?.payments?.find(row => row.method === 'bank_transfer');
+                if (!order || !payment) throw new errors.NotFoundError('Payment not found');
+                if (order.paymentStatus !== 'pending_review' || payment.paymentStatus !== 'awaiting_review') {
+                    throw new errors.ValidationError('Only payments awaiting review can be approved');
+                }
+                const orderReservations = order.reservations ?? [];
+                for (const reservation of orderReservations) {
+                    if (reservation.reservationStatus !== 'active' || !reservation.variant) continue;
+                    const variantRow = await trx(table('api::product-variant.product-variant'))
+                        .where({id: reservation.variant.id}).forUpdate().first();
+                    if (!variantRow || Number(variantRow.stock_reserved) < Number(reservation.quantity) ||
+                        Number(variantRow.stock_on_hand) < Number(reservation.quantity)) {
+                        throw new errors.ValidationError('Insufficient reserved stock for this order');
+                    }
+                    await variants.update({
+                        documentId: reservation.variant.documentId,
+                        data: {
+                            stockOnHand: Number(variantRow.stock_on_hand) - Number(reservation.quantity),
+                            stockReserved: Number(variantRow.stock_reserved) - Number(reservation.quantity)
+                        }
+                    });
+                    await reservations.update({
+                        documentId: reservation.documentId,
+                        data: {reservationStatus: 'consumed', consumedAt: new Date().toISOString()}
+                    });
+                    await strapi.documents('api::inventory-movement.inventory-movement').create({
+                        data: {
+                            movementKey: `sale-${order.documentId}-${reservation.variant.documentId}`,
+                            variant: reservation.variant.documentId, order: order.documentId,
+                            movementType: 'sale', quantityChange: -Number(reservation.quantity),
+                            reason: 'Payment approved', occurredAt: new Date().toISOString()
+                        }
+                    });
+                }
+                const reviewedAt = new Date().toISOString();
+                await payments.update({
+                    documentId: payment.documentId,
+                    data: {paymentStatus: 'succeeded', paidAt: reviewedAt, reviewedAt}
+                });
+                await orders.update({
+                    documentId: order.documentId,
+                    data: {paymentStatus: 'paid', orderStatus: 'confirmed', paidAt: reviewedAt}
+                });
+                return getOrder(undefined, order.documentId);
+            });
+        },
         async history(user: number, query: Record<string, unknown>) {
             const page = Number(query.page ?? 1);
             const pageSize = Number(query.pageSize ?? 10);
@@ -267,15 +368,20 @@ export default ({strapi}: { strapi: Core.Strapi }) => {
             const filters: any = {customer: {user: {id: user}}};
             if (search.trim()) filters.orderNumber = {$containsi: search.trim()};
             if (status === 'pending_review') filters.paymentStatus = 'pending_review';
-            else if (status === 'pending_payment') Object.assign(filters, {orderStatus: 'pending_payment', paymentStatus: 'unpaid'});
+            else if (status === 'pending_payment') Object.assign(filters, {
+                orderStatus: 'pending_payment',
+                paymentStatus: 'unpaid'
+            });
             else if (status) {
                 if (!['confirmed', 'processing', 'shipped', 'completed', 'cancelled', 'expired', 'legacy_review'].includes(status)) invalid('Invalid history status');
                 filters.orderStatus = status;
             }
             await releaseExpired();
             const total = await orders.count({filters});
-            const rows = await orders.findMany({filters, sort: ['placedAt:desc', 'id:desc'],
-                start: (page - 1) * pageSize, limit: pageSize, populate: {items: true}});
+            const rows = await orders.findMany({
+                filters, sort: ['placedAt:desc', 'id:desc'],
+                start: (page - 1) * pageSize, limit: pageSize, populate: {items: true}
+            });
             return {
                 data: rows.map(order => ({
                     documentId: order.documentId, orderNumber: order.orderNumber,
@@ -283,7 +389,10 @@ export default ({strapi}: { strapi: Core.Strapi }) => {
                     grandTotal: order.grandTotal, currency: order.currency, placedAt: order.placedAt,
                     expiresAt: order.expiresAt,
                     totalQuantity: order.items?.reduce((sum, item) => sum + (item.quantity ?? 0), 0) ?? 0,
-                    items: order.items?.map(item => ({name: item.productNameSnapshot, image: item.imageSnapshot})) ?? [],
+                    items: order.items?.map(item => ({
+                        name: item.productNameSnapshot,
+                        image: item.imageSnapshot
+                    })) ?? [],
                 })),
                 meta: {pagination: {page, pageSize, total, pageCount: Math.ceil(total / pageSize)}},
             };

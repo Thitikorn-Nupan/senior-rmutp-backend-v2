@@ -72,11 +72,15 @@ Trusted reviewers can download receipts using
 Customer tokens cannot use this route. Slip storage keys/names/hashes are
 private fields and are not returned in customer responses or public media URLs.
 
-Order history UI, approve/reject workflows and recording stock consumption on
-approval are the next phase. Do not mark orders paid by directly editing only
-a status field; approval needs a transaction that consumes reservations and
-writes Inventory Movements. This checkout deliberately reports "awaiting
-review", never "payment confirmed", after a receipt upload.
+The admin sales history UI is available at the application admin route and uses
+the protected `GET /api/checkout/admin/orders` endpoint. Reviewers can download
+receipts through the private review route and approve a pending review through
+`POST /api/checkout/admin/orders/:documentId/approve`. Approval is transactional:
+it consumes active reservations, decrements stock, writes an Inventory Movement,
+marks the payment succeeded and changes the order to confirmed. Do not mark
+orders paid by directly editing only a status field. Rejection remains a
+separate workflow; after a receipt upload the customer still sees
+"awaiting review" until an approval transaction succeeds.
 
 ## Verification
 

@@ -57,6 +57,8 @@ export async function configureAppRoles(strapi: Core.Strapi): Promise<void> {
         for (const action of actions) await grant(adminRole.id, `${type.uid}.${action}`);
     }
     await grant(adminRole.id, 'api::checkout.checkout.reviewReceipt');
+    await grant(adminRole.id, 'api::checkout.checkout.adminHistory');
+    await grant(adminRole.id, 'api::checkout.checkout.approvePayment');
     for (const action of ['manageList', 'manageSave', 'manageDelete']) await grant(adminRole.id, `api::product.product.${action}`);
     await grant(adminRole.id, 'plugin::upload.content-api.upload');
 
