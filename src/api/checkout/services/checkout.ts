@@ -89,6 +89,7 @@ export default ({strapi}: { strapi: Core.Strapi }) => {
     const payments = strapi.documents('api::payment.payment');
     const variants = strapi.documents('api::product-variant.product-variant');
     const reservations = strapi.documents('api::stock-reservation.stock-reservation');
+    const users = strapi.db.query('plugin::users-permissions.user');
     const table = (uid: string) => strapi.db.metadata.get(uid).tableName;
     const slipDirectory = () => {
         const directory = path.resolve(strapi.dirs.app.root, strapi.config.get<string>('commerce.slipDirectory', '.private/payment-slips'));
@@ -302,6 +303,53 @@ export default ({strapi}: { strapi: Core.Strapi }) => {
                     verifiedRevenue: verifiedRevenue.toFixed(2),
                     currency: 'THB'
                 }
+            };
+        },
+        async adminMembers(query: Record<string, unknown>) {
+            const page = Number(query.page ?? 1);
+            const pageSize = Number(query.pageSize ?? 12);
+            const search = typeof query.search === 'string' ? query.search.trim() : '';
+            if (!Number.isSafeInteger(page) || page < 1 || page > 100000 ||
+                !Number.isSafeInteger(pageSize) || pageSize < 1 || pageSize > 50 || search.length > 64) {
+                invalid('Invalid member filter');
+            }
+            const filters: Record<string, unknown> = {role: {type: {$ne: 'app-admin'}}};
+            if (search) {
+                filters.$or = [
+                    {username: {$containsi: search}}, {email: {$containsi: search}},
+                    {profile: {firstName: {$containsi: search}}},
+                    {profile: {lastName: {$containsi: search}}},
+                    {profile: {displayName: {$containsi: search}}}
+                ];
+            }
+            const [total, rows] = await Promise.all([
+                users.count({where: filters}),
+                users.findMany({
+                    where: filters, select: ['id', 'username', 'email', 'confirmed', 'createdAt'],
+                    orderBy: {createdAt: 'desc'}, offset: (page - 1) * pageSize, limit: pageSize,
+                    populate: {profile: {populate: {orders: {orderBy: {placedAt: 'desc'}, populate: {items: true}}}}}
+                })
+            ]);
+            return {
+                data: rows.map(user => {
+                    const profile = user.profile;
+                    const memberOrders = profile?.orders ?? [];
+                    return {
+                        id: user.id, username: user.username, email: user.email, confirmed: user.confirmed,
+                        createdAt: user.createdAt, firstName: profile?.firstName ?? '', lastName: profile?.lastName ?? '',
+                        displayName: profile?.displayName ?? '', phone: profile?.phone ?? '',
+                        orderCount: memberOrders.length,
+                        orders: memberOrders.map((order: any) => ({
+                            documentId: order.documentId, orderNumber: order.orderNumber, orderStatus: order.orderStatus,
+                            paymentStatus: order.paymentStatus, placedAt: order.placedAt, grandTotal: order.grandTotal,
+                            currency: order.currency, items: order.items?.map((item: any) => ({
+                                name: item.productNameSnapshot, sku: item.skuSnapshot, quantity: item.quantity,
+                                unitPrice: item.unitPrice, lineTotal: item.lineTotal, image: item.imageSnapshot
+                            })) ?? []
+                        }))
+                    };
+                }),
+                meta: {pagination: {page, pageSize, total, pageCount: Math.ceil(total / pageSize)}}
             };
         },
         async approvePayment(documentId: string) {

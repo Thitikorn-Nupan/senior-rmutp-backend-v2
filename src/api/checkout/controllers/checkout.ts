@@ -24,6 +24,10 @@ export default {
     ctx.set('Cache-Control', 'private, no-store');
     ctx.body = await strapi.service('api::checkout.checkout').adminHistory(ctx.query);
   },
+  async adminMembers(ctx: Context) {
+    ctx.set('Cache-Control', 'private, no-store');
+    ctx.body = await strapi.service('api::checkout.checkout').adminMembers(ctx.query);
+  },
   async approvePayment(ctx: Context) {
     ctx.set('Cache-Control', 'private, no-store');
     ctx.body = {data: await strapi.service('api::checkout.checkout').approvePayment(ctx.params.documentId)};

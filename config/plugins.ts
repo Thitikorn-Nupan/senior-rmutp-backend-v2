@@ -23,12 +23,19 @@ const deniedTypes = [
     'application/x-mach-binary',
 ];
 
+const thirtyMinutes = 30 * 60;
+
 const config = ({env}: Core.Config.Shared.ConfigParams): Core.Config.Plugin => ({
     'users-permissions': {
         config: {
             jwtManagement: 'refresh',
             register: {allowedFields: []},
             sessions: {
+                accessTokenLifespan: thirtyMinutes,
+                maxRefreshTokenLifespan: thirtyMinutes,
+                idleRefreshTokenLifespan: thirtyMinutes,
+                maxSessionLifespan: thirtyMinutes,
+                idleSessionLifespan: thirtyMinutes,
                 httpOnly: true,
             },
         },
